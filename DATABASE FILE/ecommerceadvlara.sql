@@ -586,8 +586,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `photo`, `role`, `provider`, `provider_id`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin A', 'admin@mail.com', NULL, '$2a$12$3yAkzlp/Tr66OdWaE5yoMOHbUP0mCEPAtRBJFBEdbiLjQLfadcv2e', '/storage/photos/1/admin-icn.png', 'admin', NULL, NULL, 'active', 'gsUaZyeRlckSu9M3AFpnKCYhduZPPPeYKCkEhId2EeSGftwYHa07s0md7C7G', NULL, '2022-11-27 11:47:09'),
-(2, 'Customer A', 'customer@mail.com', NULL, '$2a$12$3yAkzlp/Tr66OdWaE5yoMOHbUP0mCEPAtRBJFBEdbiLjQLfadcv2e', NULL, 'user', NULL, NULL, 'active', NULL, NULL, '2020-08-15 07:30:07');
+(1, 'Admin A', 'admin@mail.com', NULL, '$2y$12$EhtQA5QZ2p4H4iXUG5HdT.jrJKe2fTlLBKMSxSbehupMymXMQcrGW', '/storage/photos/1/admin-icn.png', 'admin', NULL, NULL, 'active', 'gsUaZyeRlckSu9M3AFpnKCYhduZPPPeYKCkEhId2EeSGftwYHa07s0md7C7G', NULL, '2022-11-27 11:47:09'),
+(2, 'Customer A', 'customer@mail.com', NULL, '$2y$12$EhtQA5QZ2p4H4iXUG5HdT.jrJKe2fTlLBKMSxSbehupMymXMQcrGW', NULL, 'user', NULL, NULL, 'active', NULL, NULL, '2020-08-15 07:30:07');
 
 -- --------------------------------------------------------
 

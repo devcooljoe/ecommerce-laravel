@@ -1,5 +1,5 @@
 
-**Developed by Joseph Onipede**
+**Developed by devcooljoe**
 
 
 **Check the Website's Post Page for all the Installation Instructions**
@@ -8,13 +8,11 @@
 ---Admin Login Details---
 
 Email   : admin@mail.com
-Password: devcooljoe
+Password: Password@123
 
 --Customer Login Details---
 Email   : customer@mail.com
-Password: devcooljoe
+Password: Password@123
 
 
 **Check the Website's Post Page for all the Installation Instructions**
-
-

@@ -93,7 +93,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-12">
                         <div class="left">
-                            <p>© {{ date('Y') }} Developed By Joseph Onipede - All Rights Reserved.</p>
+                            <p>© {{ date('Y') }} Developed By devcooljoe - All Rights Reserved.</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-12">
