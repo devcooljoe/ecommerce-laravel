@@ -1,6 +1,9 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,6 +33,6 @@ class DatabaseSeeder extends Seeder
 
     protected function isFreshMigration()
     {
-        return DB::table('migrations')->count() == 0;
+        return User::all()->count() == 0;
     }
 }

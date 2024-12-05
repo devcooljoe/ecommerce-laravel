@@ -1,86 +1,39 @@
-# docker/Dockerfile
+# Base image
+FROM php:7.4.0-apache
 
-# stage 1: build stage
-FROM php:7.2.5-fpm-alpine as build
+RUN docker-php-ext-install pdo_mysql
 
-# installing system dependencies and php extensions
-RUN apk add --no-cache \
-    zip \
-    libzip-dev \
-    freetype \
-    libjpeg-turbo \
-    libpng \
-    freetype-dev \
-    libjpeg-turbo-dev \
-    libpng-dev \
-    nodejs \
-    npm \
-    && docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo pdo_mysql \
-    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-enable gd
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# install composer
-COPY --from=composer:2.7.6 /usr/bin/composer /usr/bin/composer
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
 
+
+# Set working directory
 WORKDIR /var/www/html
 
-# copy necessary files and change permissions
+# Copy application files
 COPY . .
+
+# Set ownership and permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-# install php and node.js dependencies
-RUN composer install --no-dev --prefer-dist \
-    && php artisan db:seed \
-    && npm install \
-    && npm run build
 
-RUN chown -R www-data:www-data /var/www/html/vendor \
-    && chmod -R 775 /var/www/html/vendor
 
-# stage 2: production stage
-FROM php:8.3-fpm-alpine
+# Set Apache DocumentRoot to public directory
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
-# install nginx
-RUN apk add --no-cache \
-    zip \
-    libzip-dev \
-    freetype \
-    libjpeg-turbo \
-    libpng \
-    freetype-dev \
-    libjpeg-turbo-dev \
-    libpng-dev \
-    oniguruma-dev \
-    gettext-dev \
-    freetype-dev \
-    nginx \
-    && docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo pdo_mysql \
-    && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-enable gd \
-    && docker-php-ext-install bcmath \
-    && docker-php-ext-enable bcmath \
-    && docker-php-ext-install exif \
-    && docker-php-ext-enable exif \
-    && docker-php-ext-install gettext \
-    && docker-php-ext-enable gettext \
-    && docker-php-ext-install opcache \
-    && docker-php-ext-enable opcache \
-    && rm -rf /var/cache/apk/*
+# Add wait-for-it script to ensure the database is ready
+RUN curl -o /usr/local/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
+    && chmod +x /usr/local/bin/wait-for-it.sh
 
-# copy files from the build stage
-COPY --from=build /var/www/html /var/www/html
-COPY ./nginx.conf /etc/nginx/http.d/default.conf
-COPY ./php.ini "$PHP_INI_DIR/conf.d/app.ini"
+# Expose port 80
+EXPOSE 80
 
-WORKDIR /var/www/html
-
-# add all folders where files are being stored that require persistence. if needed, otherwise remove this line.
 VOLUME ["/var/www/html/storage/app"]
 
-CMD ["sh", "-c", "nginx && php-fpm"]
+# Start the application
+CMD ["bash", "-c", "wait-for-it.sh db:3306 -- php artisan migrate:fresh --force && php artisan db:seed --force && php artisan cache:clear && php artisan view:clear && php artisan route:clear && apache2-foreground"]

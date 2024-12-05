@@ -52,7 +52,7 @@
         "psr-4": {
             "Tests\\": "tests/"
         },
-        "files":[
+        "files": [
             "app/Http/Helpers.php"
         ]
     },
