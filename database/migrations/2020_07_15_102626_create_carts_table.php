@@ -14,12 +14,12 @@ class CreateCartsTable extends Migration
     public function up()
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->float('price');
-            $table->enum('status',['new','progress','delivered','cancel'])->default('new');
+            $table->enum('status', ['new', 'progress', 'delivered', 'cancel'])->default('new');
             $table->integer('quantity');
             $table->float('amount');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');

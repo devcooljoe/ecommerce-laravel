@@ -14,10 +14,10 @@ class CreatePostCategoriesTable extends Migration
     public function up()
     {
         Schema::create('post_categories', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title');
             $table->string('slug')->unique();
-            $table->enum('status',['active','inactive'])->default('active');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

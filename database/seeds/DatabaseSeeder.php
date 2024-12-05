@@ -4,6 +4,7 @@ use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,25 +15,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if ($this->isFreshMigration()) {
-            $path = database_path('seeds/ecommerceadvlara.sql');
+        $path = database_path('seeds/ecommerceadvlara.sql');
 
-            if (File::exists($path)) {
-                $sql = File::get($path);
+        if (File::exists($path)) {
+            $sql = File::get($path);
 
-                DB::unprepared($sql);
-
-                $this->command->info("Database seeded successfully from SQL file.");
-            } else {
-                $this->command->error("SQL file not found: " . $path);
+            try {
+                if (!Schema::hasTable('migrations')) {
+                    DB::unprepared($sql);
+                    $this->command->info("Database seeded successfully from SQL file.");
+                    $this->command->info("Users count: " . DB::table('users')->count());
+                } else {
+                    $this->command->info("Database has been migrated before");
+                }
+            } catch (\Exception $e) {
+                $this->command->error("Error seeding database: " . $e->getMessage());
             }
         } else {
-            $this->command->info("Migrations have already been run. Skipping SQL file execution.");
+            $this->command->error("SQL file not found: " . $path);
         }
-    }
-
-    protected function isFreshMigration()
-    {
-        return User::all()->count() == 0;
     }
 }

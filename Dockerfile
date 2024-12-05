@@ -36,4 +36,4 @@ EXPOSE 80
 VOLUME ["/var/www/html/storage/app"]
 
 # Start the application
-CMD ["bash", "-c", "wait-for-it.sh db:3306 -- php artisan migrate:fresh --force && php artisan db:seed --force && php artisan cache:clear && php artisan view:clear && php artisan route:clear && apache2-foreground"]
+CMD ["bash", "-c", "wait-for-it.sh db:3306 -- php artisan db:seed --force && php artisan db:seed --force && apache2-foreground"]
