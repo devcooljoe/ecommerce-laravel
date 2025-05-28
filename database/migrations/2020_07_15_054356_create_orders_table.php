@@ -14,7 +14,7 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('order_number')->unique();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->float('sub_total');
@@ -22,9 +22,9 @@ class CreateOrdersTable extends Migration
             $table->float('coupon')->nullable();
             $table->float('total_amount');
             $table->integer('quantity');
-            $table->enum('payment_method',['cod','paypal'])->default('cod');
-            $table->enum('payment_status',['paid','unpaid'])->default('unpaid');
-            $table->enum('status',['new','process','delivered','cancel'])->default('new');
+            $table->enum('payment_method', ['cod', 'paypal'])->default('cod');
+            $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
+            $table->enum('status', ['new', 'process', 'delivered', 'cancel'])->default('new');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
             $table->foreign('shipping_id')->references('id')->on('shippings')->onDelete('SET NULL');
             $table->string('first_name');

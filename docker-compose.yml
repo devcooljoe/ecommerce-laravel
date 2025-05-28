@@ -9,6 +9,7 @@ services:
       - .:/var/www/html
       - ./storage:/var/www/html/storage
       - ./public:/var/www/html/public
+      - ./public/storage:/var/www/html/public/storage
 
     ports:
       - "8000:80"

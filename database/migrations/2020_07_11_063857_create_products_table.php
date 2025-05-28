@@ -14,7 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('summary');
@@ -22,8 +22,8 @@ class CreateProductsTable extends Migration
             $table->text('photo');
             $table->integer('stock')->default(1);
             $table->string('size')->default('M')->nullable();
-            $table->enum('condition',['default','new','hot'])->default('default');
-            $table->enum('status',['active','inactive'])->default('inactive');
+            $table->enum('condition', ['default', 'new', 'hot'])->default('default');
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->float('price');
             $table->float('discount')->nullabale();
             $table->boolean('is_featured')->deault(false);
